@@ -1,4 +1,5 @@
 import { Container, Grid } from 'semantic-ui-react';
+
 export default function TopBar() {
   return (
     <div className="top-bar">
