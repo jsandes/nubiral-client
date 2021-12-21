@@ -5,24 +5,22 @@ import Table from '../components/Table';
 
 const Home: NextPage = () => {
   const [keysData, setKeysData] = useState<string[]>([]);
-  const [valuesData, setValuesData] = useState<string[]>([]);
+  const [valuesData, setValuesData] = useState<[][]>([]);
 
   useEffect(() =>{
     (async () => {
-      const response = await getHostApi();
-      // let data: HostsData = {keys: [],values: []};       
+      const response = await getHostApi();      
       let keys = Object.keys(response[0]);
       setKeysData(keys);
       let values = response.map((item: {}) => Object.values(item));
       setValuesData(values || {});
     })()
-    console.log('keysData', keysData);
-    console.log('valuesData', valuesData);
   }, []);
+
   return (
     <div className="home">
       <h1>Host List</h1>
-      <Table data={{keysData, valuesData}} />
+      <Table keysData={keysData} tableData={valuesData}/>
     </div>
   )
 }
