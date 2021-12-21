@@ -9,7 +9,7 @@ export default function BasicLayout({children}: LayoutProps) {
   return (
     <Container fluid className='basic-layout'>
       <Header />
-      <Container className='content'>
+      <Container fluid className='content'>
         {children}
       </Container>
     </Container>
