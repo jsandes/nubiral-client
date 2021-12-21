@@ -4,8 +4,8 @@ import { getHostApi } from './api/hosts';
 import Table from '../components/Table';
 
 const Home: NextPage = () => {
-  const [keysData, setKeysData] = useState([]);
-  const [valuesData, setValuesData] = useState([]);
+  const [keysData, setKeysData] = useState<string[]>([]);
+  const [valuesData, setValuesData] = useState<string[]>([]);
 
   useEffect(() =>{
     (async () => {
@@ -16,6 +16,8 @@ const Home: NextPage = () => {
       let values = response.map((item: {}) => Object.values(item));
       setValuesData(values || {});
     })()
+    console.log('keysData', keysData);
+    console.log('valuesData', valuesData);
   }, []);
   return (
     <div className="home">
