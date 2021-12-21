@@ -5,7 +5,7 @@ import Table from '../components/Table';
 
 const Home: NextPage = () => {
   const [keysData, setKeysData] = useState<string[]>([]);
-  const [valuesData, setValuesData] = useState<[][]>([]);
+  const [valuesData, setValuesData] = useState<[]>([]);
 
   useEffect(() =>{
     (async () => {
