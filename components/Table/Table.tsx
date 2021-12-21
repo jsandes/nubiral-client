@@ -3,12 +3,27 @@ import { Table } from 'semantic-ui-react';
 
 interface HostsData {
   keysData: string[] | [];
-  tableData: [][] | [];
+  tableData: [] | [];
 }
-const TablePagination = ({keysData, tableData} : HostsData) => {
+const TablePagination = ({keysData, tableData = []} : HostsData) => {
   const Capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
   
   useEffect(() => {},[tableData]);
+
+  const makeCell = (items: []) => items.map((item, index) => {
+      return <Table.Cell key={index}>{item}</Table.Cell>
+    });
+
+  const makeRow = (tableData: []) => {
+    if(!tableData) return <Table.Row><Table.Cell>No hay items</Table.Cell></Table.Row>;
+    const table = tableData.map((items, index) => 
+      <Table.Row key={index}>
+        {makeCell(items)}
+      </Table.Row>
+    )   
+    return table;   
+  }
+
   return (
     <Table celled>
         <Table.Header>
@@ -20,20 +35,8 @@ const TablePagination = ({keysData, tableData} : HostsData) => {
             }
           </Table.Row>
         </Table.Header>
-
         <Table.Body>
-          {tableData ? 
-            tableData.map(items => {
-              console.log('items', items);
-              <Table.Row>
-                {items.map((i, index) => {
-                  console.log('item', i);
-                  <Table.Cell key={index}>{i}</Table.Cell>
-                })}
-              </Table.Row>      
-            })
-            : <Table.Cell>No hay items</Table.Cell>
-          }
+          {makeRow(tableData)}
         </Table.Body>
     </Table>
   )
