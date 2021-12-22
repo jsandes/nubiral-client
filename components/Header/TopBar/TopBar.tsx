@@ -1,6 +1,12 @@
-import { Container, Grid } from 'semantic-ui-react';
+import { useState } from 'react';
+import { Button, Container, Grid } from 'semantic-ui-react';
+import Auth from '../../Auth';
+import BasicModal from '../../Modal/BasicModal';
 
 export default function TopBar() {
+  const [showModal, setShowModal] = useState(false);
+  const onCloseModal = () => setShowModal(false);
+
   return (
     <div className="top-bar">
       <Container>
@@ -11,7 +17,10 @@ export default function TopBar() {
           <Grid.Column width={8} className="top-bar__right">
             <span>Item1</span>
             <span>Item2</span>
-            <span>Item3</span>
+            <Button onClick={() => setShowModal(true)}>Register/Login</Button>
+            <BasicModal show={showModal} setShow={setShowModal}>
+              <Auth onCloseModal={onCloseModal} />
+            </BasicModal>
           </Grid.Column>
         </Grid>
       </Container>

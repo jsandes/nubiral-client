@@ -7,15 +7,15 @@ const Home: NextPage = () => {
   const [keysData, setKeysData] = useState<string[]>([]);
   const [valuesData, setValuesData] = useState<[]>([]);
 
-  useEffect(() =>{
-    (async () => {
-      const response = await getHostApi();      
-      let keys = Object.keys(response[0]);
-      setKeysData(keys);
-      let values = response.map((item: {}) => Object.values(item));
-      setValuesData(values || {});
-    })()
-  }, []);
+  // useEffect(() =>{
+  //   (async () => {
+  //     const response = await getHostApi();      
+  //     let keys = Object.keys(response[0]);
+  //     setKeysData(keys);
+  //     let values = response.map((item: {}) => Object.values(item));
+  //     setValuesData(values || {});
+  //   })()
+  // }, []);
 
   return (
     <div className="home">
