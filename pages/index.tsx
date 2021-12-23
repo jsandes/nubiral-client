@@ -9,11 +9,14 @@ const Home: NextPage = () => {
 
   // useEffect(() =>{
   //   (async () => {
-  //     const response = await getHostApi();      
-  //     let keys = Object.keys(response[0]);
-  //     setKeysData(keys);
-  //     let values = response.map((item: {}) => Object.values(item));
-  //     setValuesData(values || {});
+  //     const accesToken = localStorage.getItem('userData')
+  //     if (accesToken) {
+  //       const response = await getHostApi(accesToken);      
+  //       let keys = Object.keys(response[0]);
+  //       setKeysData(keys);
+  //       let values = response.map((item: {}) => Object.values(item));
+  //       setValuesData(values || {});
+  //     }
   //   })()
   // }, []);
 

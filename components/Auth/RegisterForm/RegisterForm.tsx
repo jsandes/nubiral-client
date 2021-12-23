@@ -1,52 +1,81 @@
 import { Form, Button} from 'semantic-ui-react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { ObjectShape } from 'yup/lib/object';
+import { registerApi } from '../../../pages/api/user';
+import { useState, useEffect } from 'react';
 
 interface Props {
-  showLoginForm: Function;
+  showLoginForm: React.MouseEventHandler<HTMLButtonElement>;
+  onCloseModal: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function LoginForm({showLoginForm}: Props) {
+type User = {
+  username: string;
+  email: string;
+}
+export default function RegisterForm({showLoginForm}: Props) {
+  const [user, setUser] = useState<User | null>(null)
+
+  const makeRegister = async (formData: object) => {
+    const userData = await registerApi(formData);
+    localStorage.setItem('userData', userData);
+    setUser(userData);
+  }
+  
+  useEffect(() => {
+    if(user) showLoginForm;
+  }, [user]);
 
   const formik = useFormik({
     initialValues: initialValues(),
-    validationSchema:Yup.object(validationSchema),
-    onSubmit: (formData) => {
-      console.log(formData)
-    }
+    validationSchema:Yup.object({
+      username: Yup.string().required(),
+      email: Yup.string().email().required(),
+      password: Yup.string().required(),
+    }),
+    onSubmit: async (formData) => makeRegister(formData)
   })
 
   return (
     <div>
-      <h2>Registro</h2>
-      <Form className="login-form" onSubmit={formik.handleSubmit}>
-        <Form.Input 
-          name="username"
-          type="text"
-          placeholder="Username"
-          onChange={formik.handleChange}
-          error={formik.errors.username}
-        />
-        <Form.Input 
-          name="email"
-          type="text"
-          placeholder="Email"
-          onChange={formik.handleChange}
-          error={formik.errors.email}
-        />
-        <Form.Input 
-          name="password"
-          type="password"
-          placeholder="Password"
-          onChange={formik.handleChange}
-          error={formik.errors.password}
-        />
-        <div className="actions">
-          <Button onClick={showLoginForm}>Iniciar sesión</Button>
-          <Button type="submit">Registrar</Button>
+      {user ?
+        <div>
+          <h3>Usuario guardado</h3>
+          <span>Username: {user.username}</span>
+          <br />
+          <span>Email: {user.email}</span>
         </div>
-      </Form>
+        : <div>
+            <h2>Registro</h2>
+          <Form className="login-form" onSubmit={formik.handleSubmit}>
+            <Form.Input 
+              name="username"
+              type="text"
+              placeholder="Username"
+              onChange={formik.handleChange}
+              error={formik.errors.username}
+            />
+            <Form.Input 
+              name="email"
+              type="text"
+              placeholder="Email"
+              onChange={formik.handleChange}
+              error={formik.errors.email}
+            />
+            <Form.Input 
+              name="password"
+              type="password"
+              placeholder="Password"
+              onChange={formik.handleChange}
+              error={formik.errors.password}
+            />
+            <div className="actions">
+              <Button onClick={showLoginForm}>Iniciar sesión</Button>
+              <Button type="submit">Registrar</Button>
+            </div>
+          </Form>
+        </div>
+      }
     </div>
   )
 }
@@ -56,13 +85,5 @@ function initialValues(){
     username: '',
     email: '',
     password: ''
-  }
-}
-
-function validationSchema(){
-  return {
-    username: Yup.string().required(true),
-    email: Yup.string().required(true),
-    password: Yup.string().required(true),
   }
 }
