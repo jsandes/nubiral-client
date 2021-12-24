@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { loginApi } from '../../../pages/api/user';
 import { useState, useEffect } from 'react';
+import useAuth from '../../../hooks/useAuth';
 
 interface Props {
   showLoginForm: React.MouseEventHandler<HTMLButtonElement>;
@@ -15,13 +16,16 @@ type User = {
 }
 
 export default function LoginForm({showLoginForm}: Props) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setloading] = useState(false);
+  const { login } = useAuth();
 
   const makeLogin = async (formData: object) => {
-    const userData = await loginApi(formData);
-    console.log('loginApi userData', userData);
-    localStorage.setItem('userData', userData);
-    setUser(userData);
+    setloading(true);
+    const {user, token} = await loginApi(formData);
+    login(token)
+    setUser(user);
+    setloading(false);
   }
   
   useEffect(() => {}, [user]);
@@ -63,7 +67,7 @@ export default function LoginForm({showLoginForm}: Props) {
             />
             <div className="actions">
               <Button onClick={showLoginForm}>Registrar</Button>
-              <Button type="submit">Iniciar sesión</Button>
+              <Button type="submit" loading={loading}>Iniciar sesión</Button>
             </div>
           </Form>
         </div>
@@ -78,21 +82,3 @@ function initialValues(){
     password: ''
   }
 }
-
-
-
-// import { Button } from 'semantic-ui-react';
-
-// interface Props {
-//   showLoginForm: React.MouseEventHandler<HTMLButtonElement>;
-//   onCloseModal: React.MouseEventHandler<HTMLButtonElement>;
-// }
-
-// export default function LoginForm({showLoginForm}: Props) {
-//   return (
-//     <div>
-//       <h1>LoginForm</h1>
-//       <Button onClick={showLoginForm}>Registrate</Button>
-//     </div>
-//   )
-// }
