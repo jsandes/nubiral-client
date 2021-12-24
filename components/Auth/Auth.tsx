@@ -7,7 +7,6 @@ interface Props {
   onCloseModal: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-
 export default function Auth({onCloseModal}: Props) {
   const [showLogin, setShowLogin] = useState(true);
 

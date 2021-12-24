@@ -6,24 +6,36 @@ import Table from '../components/Table';
 const Home: NextPage = () => {
   const [keysData, setKeysData] = useState<string[]>([]);
   const [valuesData, setValuesData] = useState<[]>([]);
+  const [token, setToken] = useState('');
 
-  // useEffect(() =>{
-  //   (async () => {
-  //     const accesToken = localStorage.getItem('userData')
-  //     if (accesToken) {
-  //       const response = await getHostApi(accesToken);      
-  //       let keys = Object.keys(response[0]);
-  //       setKeysData(keys);
-  //       let values = response.map((item: {}) => Object.values(item));
-  //       setValuesData(values || {});
-  //     }
-  //   })()
-  // }, []);
+  const getHost = async (token: string) => {
+    const response = await getHostApi(token); 
+    if(response) {
+      let keys = Object.keys(response[0]) ;
+      setKeysData(keys);
+      let values = response.map((item: {}) => Object.values(item));
+      setValuesData(values || {}); 
+    }
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('token') || '';
+    setToken(token);
+    if(token) getHost(token)
+  }, [token]);
 
   return (
     <div className="home">
-      <h1>Host List</h1>
-      <Table keysData={keysData} tableData={valuesData}/>
+      {!token ?
+        <div>
+          <h1>Host List</h1>
+          <span>Debes loguearte primero</span>
+        </div>
+        : <div>
+          <h1>Host List</h1>
+          <Table keysData={keysData} tableData={valuesData}/>
+        </div>
+      }
     </div>
   )
 }

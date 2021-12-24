@@ -15,11 +15,14 @@ type User = {
 }
 export default function RegisterForm({showLoginForm}: Props) {
   const [user, setUser] = useState<User | null>(null)
+  const [loading, setloading] = useState(false);
 
   const makeRegister = async (formData: object) => {
+    setloading(true);
     const userData = await registerApi(formData);
     localStorage.setItem('userData', userData);
     setUser(userData);
+    setloading(false);
   }
   
   useEffect(() => {
@@ -71,7 +74,7 @@ export default function RegisterForm({showLoginForm}: Props) {
             />
             <div className="actions">
               <Button onClick={showLoginForm}>Iniciar sesión</Button>
-              <Button type="submit">Registrar</Button>
+              <Button type="submit" loading={loading}>Registrar</Button>
             </div>
           </Form>
         </div>
