@@ -18,9 +18,9 @@ export default function TopBar() {
             <span>Item1</span>
             <span>Item2</span>
             <Button onClick={() => setShowModal(true)}>Register/Login</Button>
-            <BasicModal show={showModal} setShow={setShowModal}>
-              <Auth onCloseModal={onCloseModal} />
-            </BasicModal>
+{ /*{             <BasicModal show={showModal} setShow={setShowModal}>
+              <Auth onCloseModal={onCloseModal} /> }
+            </BasicModal> */}
           </Grid.Column>
         </Grid>
       </Container>
